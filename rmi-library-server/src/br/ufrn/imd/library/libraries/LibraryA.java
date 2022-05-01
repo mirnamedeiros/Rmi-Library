@@ -21,7 +21,6 @@ public class LibraryA implements LibraryInterface{
 		libObjs.add(b2);	
 		libObjs.add(b3);	
 		
-		libObjs.get(1).setAvailable(false, 5);
 	}
 
 	@Override
@@ -50,9 +49,24 @@ public class LibraryA implements LibraryInterface{
 		}
 	}
 
-
 	public String getName() {
 		return name;
+	}
+
+	@Override
+	public void borrow(String title, int days) {
+		libObjs.stream()
+		.filter(b -> b.getName().equals(title))
+		.filter(b -> b.isAvailable())
+		.findFirst().get().setAvailable(false, days);
+	}
+
+	@Override
+	public void returnCopie(String title, int days) {
+		libObjs.stream()
+		.filter(b -> b.getName().equals(title))
+		.filter(b -> b.getQtdDays() == days)
+		.findFirst().get().setAvailable(true, 0);
 	}
 	
 }

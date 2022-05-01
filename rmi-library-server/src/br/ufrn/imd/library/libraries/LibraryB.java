@@ -24,7 +24,7 @@ public class LibraryB implements LibraryInterface {
 		libObjs.add(b3);
 		libObjs.add(b4);
 		
-		libObjs.get(1).setAvailable(false, 7);
+		borrow("A Dance with Dragons", 10);
 	}
 
 	public String getName() {
@@ -55,5 +55,21 @@ public class LibraryB implements LibraryInterface {
 			return availableTitle > 0 ? name+ ": There's "+availableTitle+" copie(s) available." 
 					:name+ ": It's going to be available in "+borrewedBook+" days." ;			
 		}
+	}
+	
+	@Override
+	public void borrow(String title, int days) {
+		libObjs.stream()
+		.filter(b -> b.getName().equals(title))
+		.filter(b -> b.isAvailable())
+		.findFirst().get().setAvailable(false, days);
+	}
+
+	@Override
+	public void returnCopie(String title, int days) {
+		libObjs.stream()
+		.filter(b -> b.getName().equals(title))
+		.filter(b -> b.getQtdDays() == days)
+		.findFirst().get().setAvailable(true, 0);
 	}
 }

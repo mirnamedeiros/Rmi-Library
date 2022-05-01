@@ -27,9 +27,10 @@ public class LibraryC implements LibraryInterface {
 		libObjs.add(b4);
 		libObjs.add(b5);
 		
-		libObjs.get(2).setAvailable(false, 15);
-//		libObjs.get(3).setAvailable(false, 3);
-		libObjs.get(4).setAvailable(false, 4);
+		borrow("A Dance with Dragons", 3);
+		borrow("A Clash of Kings", 15);
+//		borrow("A Clash of Kings", 4);
+//		returnCopie("A Clash of Kings", 15);
 	}
 	
 	@Override
@@ -60,5 +61,21 @@ public class LibraryC implements LibraryInterface {
 	
 	public String getName() {
 		return name;
+	}
+	
+	@Override
+	public void borrow(String title, int days) {
+		libObjs.stream()
+		.filter(b -> b.getName().equals(title))
+		.filter(b -> b.isAvailable())
+		.findFirst().get().setAvailable(false, days);
+	}
+
+	@Override
+	public void returnCopie(String title, int days) {
+		libObjs.stream()
+		.filter(b -> b.getName().equals(title))
+		.filter(b -> b.getQtdDays() == days)
+		.findFirst().get().setAvailable(true, 0);
 	}
 }
